@@ -1,0 +1,29 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id       Int     @id @default(autoincrement())
+  username String  @unique
+  password String
+  isAuth   Boolean @default(false)
+  urls     url[]
+}
+
+model url {
+  id       Int        @id @default(autoincrement())
+  author   User       @relation(fields: [authorId], references: [id])
+  authorId Int
+  data     file_Data?
+}
+
+model file_Data {
+  id     Int @id @default(autoincrement())
+  file   url @relation(fields: [fileId], references: [id])
+  fileId Int @unique
+}
