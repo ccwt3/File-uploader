@@ -23,7 +23,10 @@ model url {
 }
 
 model file_Data {
-  id     Int @id @default(autoincrement())
-  file   url @relation(fields: [fileId], references: [id])
-  fileId Int @unique
+  id          Int      @id @default(autoincrement())
+  file        url      @relation(fields: [fileId], references: [id])
+  fileId      Int      @unique
+  name        String
+  size        Float
+  upload_time DateTime @default(now())
 }

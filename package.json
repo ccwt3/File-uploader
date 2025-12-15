@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node app.js --watch"
+    "dev": "node app.js --watch",
+    "elpepe": "npx tsx models/script.ts"
   },
   "repository": {
     "type": "git",
