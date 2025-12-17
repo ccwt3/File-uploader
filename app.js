@@ -39,8 +39,7 @@ app.use("/register", registerRouter);
 
 // catching error middleware
 app.use((err, req, res, next) => {
-  console.error(err);
-  res.status(500).send("esta mal");
+  res.render("errors", {message: err.message});
 });
 
 // app listening

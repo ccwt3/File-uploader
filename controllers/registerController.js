@@ -1,7 +1,7 @@
 import registerFunction from "../middleware/auth/register";
 
 function registerGet(req, res) {
-  res.render("register");
+  res.render("register", {error: null});
 }
 
 async function registerPost(req, res) {
@@ -10,11 +10,10 @@ async function registerPost(req, res) {
 
   const operation = await registerFunction(username, password);
 
-  if (operation === true) {
+  if (operation) {
     res.redirect("/login");
   } else {
-    //todo Error handling
-    throw new operation();
+    res.render("register", { error: "username already taken" });
   }
 }
 

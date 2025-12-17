@@ -14,7 +14,6 @@ export default async function registerFunction(username, password) {
     await prisma.$disconnect();
     return true;
   } catch (err) {
-    console.error(err);
-    return err;
+    return false;
   }
 }
