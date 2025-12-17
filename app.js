@@ -47,6 +47,7 @@ app.listen(PORT, (err) => {
   if (err) {
     throw err;
   } else {
+    console.error(err);
     console.log("running 3000");
   }
 });

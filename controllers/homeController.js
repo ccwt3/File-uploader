@@ -6,7 +6,7 @@ function homeGet(req, res) {
   if (!req.user) {
     return res.redirect("/register");
   }
-  return res.render("home");
+  return res.render("home", {user: req.user});
 }
 
 export { sataAndaki, homeGet };
