@@ -10,11 +10,9 @@ export default session({
   secret: process.env.COOKIE_SECRET,
   resave: true,
   saveUninitialized: true,
-  store: new PrismaSessionStore(
-    prisma, {
-      checkPeriod: 2 * 60 * 1000,
-      dbRecordIdIsSessionId: true,
-      dbRecordIdFunction: undefined,
-    }
-  )
-})
+  store: new PrismaSessionStore(prisma, {
+    checkPeriod: 2 * 60 * 1000,
+    dbRecordIdIsSessionId: true,
+    dbRecordIdFunction: undefined,
+  }),
+});

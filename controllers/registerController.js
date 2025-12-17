@@ -1,4 +1,4 @@
-import registerFunction from "../models/credentialManagement/register";
+import registerFunction from "../middleware/auth/register";
 
 function registerGet(req, res) {
   res.render("register");
@@ -9,7 +9,7 @@ async function registerPost(req, res) {
   const password = req.body.password;
 
   const operation = await registerFunction(username, password);
-  
+
   if (operation === true) {
     res.redirect("/login");
   } else {

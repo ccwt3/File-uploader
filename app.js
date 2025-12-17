@@ -2,8 +2,6 @@
 import express from "express";
 import path from "path";
 const __dirname = import.meta.dirname;
-
-//todo Passport libs
 import passport from "passport";
 
 // modules
@@ -11,8 +9,8 @@ import homeRouter from "./routes/homeRouter.js";
 import loginRouter from "./routes/loginRouter.js";
 import registerRouter from "./routes/registerRouter.js";
 import session from "./middleware/auth/sessionConfig.js";
-import login from "./models/credentialManagement/login.js";
-import * as serial from "./models/credentialManagement/serial.js";
+import passportAuth from "./middleware/auth/passportAuth.js";
+import * as serial from "./middleware/auth/serial.js";
 
 // app start
 const app = express();
@@ -30,7 +28,7 @@ app.use(session);
 app.use(express.urlencoded({ extended: true }));
 app.use(passport.authenticate("session"));
 
-passport.use(login);
+passport.use(passportAuth);
 passport.serializeUser(serial.serialize);
 passport.deserializeUser(serial.deserialize);
 

@@ -11,6 +11,6 @@ function loginGet(req, res) {
 const loginPost = passport.authenticate("local", {
   successRedirect: "/",
   failureRedirect: "/login",
-})
+});
 
 export { loginGet, loginPost };

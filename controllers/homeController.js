@@ -4,12 +4,9 @@ function sataAndaki(req, res) {
 
 function homeGet(req, res) {
   if (!req.user) {
-    return res.redirect("/register")
+    return res.redirect("/register");
   }
   return res.render("home");
 }
 
-export {
-  sataAndaki,
-  homeGet
-};
+export { sataAndaki, homeGet };
