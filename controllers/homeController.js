@@ -3,7 +3,10 @@ function sataAndaki(req, res) {
 }
 
 function homeGet(req, res) {
-  res.render("home");
+  if (!req.user) {
+    return res.redirect("/register")
+  }
+  return res.render("home");
 }
 
 export {

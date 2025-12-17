@@ -2,14 +2,17 @@
 import express from "express";
 import path from "path";
 const __dirname = import.meta.dirname;
-import session from "express-session";
-import "dotenv/config";
 
-import { PrismaSessionStore } from "@quixo3/prisma-session-store";
-import prisma from "./prisma/lib/prisma.ts";
+//todo Passport libs
+import passport from "passport";
 
 // modules
 import homeRouter from "./routes/homeRouter.js";
+import loginRouter from "./routes/loginRouter.js";
+import registerRouter from "./routes/registerRouter.js";
+import session from "./middleware/auth/sessionConfig.js";
+import login from "./models/credentialManagement/login.js";
+import * as serial from "./models/credentialManagement/serial.js";
 
 // app start
 const app = express();
@@ -22,29 +25,19 @@ app.set("views", path.join(__dirname, "/views"));
 const assetsPath = path.join(__dirname, "public");
 app.use(express.static(assetsPath));
 
-// session middleware
-app.use(
-  session({
-    cookie: {
-      maxAge: 5 * 60 * 1000,
-    },
-    secret: process.env.COOKIE_SECRET,
-    resave: true,
-    saveUninitialized: true,
-    store: new PrismaSessionStore(
-      prisma, {
-        checkPeriod: 2 * 60 * 1000,
-        dbRecordIdIsSessionId: true,
-        dbRecordIdFunction: undefined,
-      }
-    )
-  })
-);
-
+// session and passport middleware
+app.use(session);
 app.use(express.urlencoded({ extended: true }));
+app.use(passport.authenticate("session"));
+
+passport.use(login);
+passport.serializeUser(serial.serialize);
+passport.deserializeUser(serial.deserialize);
 
 // routes middleware
-app.get("/", homeRouter);
+app.use("/", homeRouter);
+app.use("/login", loginRouter);
+app.use("/register", registerRouter);
 
 // catching error middleware
 app.use((err, req, res, next) => {
