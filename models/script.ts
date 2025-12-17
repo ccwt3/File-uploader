@@ -1,15 +1,13 @@
 import prisma from "../prisma/lib/prisma";
 
 async function main() {
-  const user = await prisma.user.create({
-    data: {
-      username: "josepe",
-      password: "12345",
-      isAuth: false,
+  const user = await prisma.user.findMany({
+    where: {
+      id: 1,
     },
   });
 
-  return console.log("user created", user);
+  return console.log("user: ", user);
 }
 
 main()

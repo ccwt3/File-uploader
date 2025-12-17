@@ -30,3 +30,10 @@ model file_Data {
   size        Float
   upload_time DateTime @default(now())
 }
+
+model Session {
+  id        String   @id
+  sid       String   @unique
+  data      String
+  expiresAt DateTime
+}
