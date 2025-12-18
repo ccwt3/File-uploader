@@ -3,6 +3,7 @@ import express from "express";
 import path from "path";
 const __dirname = import.meta.dirname;
 import passport from "passport";
+import flash from "connect-flash";
 
 // modules
 import homeRouter from "./routes/homeRouter.js";
@@ -24,6 +25,7 @@ const assetsPath = path.join(__dirname, "public");
 app.use(express.static(assetsPath));
 
 // session and passport middleware
+app.use(flash());
 app.use(session);
 app.use(express.urlencoded({ extended: true }));
 app.use(passport.authenticate("session"));
@@ -39,15 +41,15 @@ app.use("/register", registerRouter);
 
 // catching error middleware
 app.use((err, req, res, next) => {
-  res.render("errors", {message: err.message});
+  res.render("errors", { message: err.message });
 });
 
 // app listening
 app.listen(PORT, (err) => {
   if (err) {
+    console.error(err);
     throw err;
   } else {
-    console.error(err);
     console.log("running 3000");
   }
 });

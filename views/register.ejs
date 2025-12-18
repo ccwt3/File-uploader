@@ -9,17 +9,23 @@
     <form action="/register" method="post">
       <div>
         <label for="username">
-          Username: <% if(error) { %> <%= error %> <% } %>
+          Username: <% if(err && err.username) { %> <%= err.username.msg %> <% }
+          %>
         </label>
         <input type="text" name="username" id="username" />
       </div>
 
       <div>
-        <label for="password">Password: </label>
+        <label for="password">
+          Password: <% if(err && err.password) { %> <%= err.password.msg %> <% }
+          %>
+        </label>
         <input type="password" name="password" id="password" />
       </div>
 
       <button type="submit">Register</button>
+
+      <a href="/login">Already have an account?</a>
     </form>
   </body>
 </html>
