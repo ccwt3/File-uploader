@@ -8,27 +8,30 @@ datasource db {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  username String  @unique
+  id       Int      @id @default(autoincrement())
+  username String   @unique
   password String
-  isAuth   Boolean @default(false)
-  urls     url[]
+  isAuth   Boolean  @default(false)
+  folders  folder[]
 }
 
-model url {
-  id       Int        @id @default(autoincrement())
-  author   User       @relation(fields: [authorId], references: [id])
-  authorId Int
-  data     file_Data?
+model folder {
+  id         Int        @id @default(autoincrement())
+  author     User       @relation(fields: [authorId], references: [id])
+  authorId   Int
+  folderName String     @unique
+  file       fileData[]
 }
 
-model file_Data {
-  id          Int      @id @default(autoincrement())
-  file        url      @relation(fields: [fileId], references: [id])
-  fileId      Int      @unique
-  name        String
-  size        Float
-  upload_time DateTime @default(now())
+model fileData {
+  id         Int      @id @default(autoincrement())
+  folder     folder   @relation(fields: [folderId], references: [id])
+  folderId   Int
+  url        String
+  name       String   @unique
+  size       Float
+  uploadTime DateTime @default(now())
+  fileType   String?
 }
 
 model Session {

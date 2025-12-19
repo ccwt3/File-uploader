@@ -4,9 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>home</title>
-    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="home.css" />
   </head>
   <body>
+    <div
+      class="error__message <% if(err[0].length != 0) { %> error--animation <% } %>"
+    >
+      <%= err %>
+    </div>
+
     <aside class="sidebar">
       <h4>Hello <%= user.username %></h4>
       <button type="button" class="sidebar__search sidebar--button">
@@ -28,10 +34,14 @@
       <nav class="dashboard__navbar">
         <ul>
           <li class="dashboard__item">
-            <button type="button" class="dashboard__button dashboard--create">Create Folder</button>
+            <button type="button" class="dashboard__button dashboard--create">
+              Create Folder
+            </button>
           </li>
           <li class="dashboard__item">
-            <button type="button" class="dashboard__button dashboard--upload">Upload File</button>
+            <button type="button" class="dashboard__button dashboard--upload">
+              Upload File
+            </button>
           </li>
         </ul>
       </nav>
@@ -39,23 +49,26 @@
       <dialog class="dashboard__create_folder_form">
         <form action="/?action=create" method="post">
           <label for="folderName">Name: </label>
-          <input type="text" name="folderName" id="folderName">
+          <input type="text" name="folderName" id="folderName" />
           <button type="submit">Create</button>
         </form>
 
-        <button type="button" class="dashboard__close_create_form">Cancel</button>
+        <button type="button" class="dashboard__close_create_form">
+          Cancel
+        </button>
       </dialog>
 
       <dialog class="dashboard__upload_form">
         <form action="/?action=upload" method="post">
           <label for="file">File: </label>
-          <input type="file">
+          <input type="file" />
           <button type="submit">Upload</button>
         </form>
 
-        <button type="button" class="dashboard__close_upload_form">Cancel</button>
+        <button type="button" class="dashboard__close_upload_form">
+          Cancel
+        </button>
       </dialog>
-
     </main>
 
     <script src="homeScript.js"></script>

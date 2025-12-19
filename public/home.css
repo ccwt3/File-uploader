@@ -30,3 +30,38 @@ body {
   list-style: none;
   gap: 1rem;
 }
+
+.error__message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 200px;
+  height: 50px;
+  background-color: red;
+  left: 50%;
+  transform: translateY(-100%);
+  text-align: center;
+  overflow: hidden;
+}
+
+.error--animation {
+  animation: error_Animation 3s ease-in-out 2 500ms ;
+  animation-direction: alternate;
+  animation-timing-function: cubic-bezier(0,1.02,0,1.01);
+  
+}
+
+@keyframes error_Animation {
+  0% {
+    transform: translate(100px, -100%);
+    background-color: red;
+    width: 0px;
+  }
+
+  100% {
+    transform: translate(0px, 5%);
+    background-color: blue;
+    width: 200px;
+  }
+}
