@@ -5,7 +5,7 @@ import prisma from "../../prisma/lib/prisma.ts";
 
 export default session({
   cookie: {
-    maxAge: 5 * 60 * 1000,
+    maxAge: 15 * 60 * 1000,
   },
   secret: process.env.COOKIE_SECRET,
   resave: true,

@@ -1,0 +1,32 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  display: flex;
+}
+
+.sidebar {
+  border: 1px solid black;
+  position: fixed;
+  height: 100dvh;
+  width: 20dvw;
+  padding: 1rem;
+}
+
+.dashboard {
+  position: relative;
+  margin-left: 20dvw;
+  border: 1px solid red;
+  padding: 1rem;
+  width: 80dvw;
+}
+
+.dashboard__navbar ul{
+  display: flex;
+  padding: 0;
+  text-decoration: none;
+  list-style: none;
+  gap: 1rem;
+}

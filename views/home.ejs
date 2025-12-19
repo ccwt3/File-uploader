@@ -4,8 +4,60 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>home</title>
+    <link rel="stylesheet" href="home.css">
   </head>
   <body>
-    <h1>Sata andaki (<%= user.username %>)</h1>
+    <aside class="sidebar">
+      <h4>Hello <%= user.username %></h4>
+      <button type="button" class="sidebar__search sidebar--button">
+        <a href="#">Search</a>
+      </button>
+      <p class="sidebar__folders_title">Folders</p>
+      <ul class="sidebar__folders">
+        <li class="sidebar__folder">
+          <button type="button" class="sidebar--button">
+            <a href="#">Personal</a>
+          </button>
+        </li>
+      </ul>
+    </aside>
+
+    <main class="dashboard">
+      <h1 class="dashboard__title">Folder's name</h1>
+      <h5 class="dashboard__subtitle">Manage your files here</h5>
+      <nav class="dashboard__navbar">
+        <ul>
+          <li class="dashboard__item">
+            <button type="button" class="dashboard__button dashboard--create">Create Folder</button>
+          </li>
+          <li class="dashboard__item">
+            <button type="button" class="dashboard__button dashboard--upload">Upload File</button>
+          </li>
+        </ul>
+      </nav>
+
+      <dialog class="dashboard__create_folder_form">
+        <form action="/?action=create" method="post">
+          <label for="folderName">Name: </label>
+          <input type="text" name="folderName" id="folderName">
+          <button type="submit">Create</button>
+        </form>
+
+        <button type="button" class="dashboard__close_create_form">Cancel</button>
+      </dialog>
+
+      <dialog class="dashboard__upload_form">
+        <form action="/?action=upload" method="post">
+          <label for="file">File: </label>
+          <input type="file">
+          <button type="submit">Upload</button>
+        </form>
+
+        <button type="button" class="dashboard__close_upload_form">Cancel</button>
+      </dialog>
+
+    </main>
+
+    <script src="homeScript.js"></script>
   </body>
 </html>
