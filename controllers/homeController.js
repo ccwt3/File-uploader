@@ -1,10 +1,18 @@
 import createFolder from "../models/createFolder.ts";
+import getFolders from "../models/getFolders.ts"
 
-function homeGet(req, res) {
+async function homeGet(req, res) {
   if (!req.user) {
     return res.redirect("/register");
   }
-  return res.render("home", { user: req.user, err: [req.flash("folder") || null] });
+
+  const folders = await getFolders(req.user.id);
+
+  return res.render("home", { 
+    user: req.user, 
+    err: [req.flash("folder") || null],
+    folders: folders,
+  });
 }
 
 async function homePost(req, res) {
@@ -22,9 +30,11 @@ async function homePost(req, res) {
       return res.redirect("/");
     } else {
       req.flash("folder", "Two folders can't have the same name");
-      res.redirect("/"); 
+      return res.redirect("/"); 
     }
   }
+
+  return res.send("nada we");
 }
 
 export { homeGet, homePost };

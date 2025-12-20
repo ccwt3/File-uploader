@@ -52,6 +52,14 @@ body {
   
 }
 
+.sidebar__folders {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  gap: 10px;
+}
+
 @keyframes error_Animation {
   0% {
     transform: translate(100px, -100%);

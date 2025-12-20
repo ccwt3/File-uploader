@@ -19,13 +19,11 @@
         <a href="#">Search</a>
       </button>
       <p class="sidebar__folders_title">Folders</p>
-      <ul class="sidebar__folders">
-        <li class="sidebar__folder">
-          <button type="button" class="sidebar--button">
-            <a href="#">Personal</a>
-          </button>
-        </li>
-      </ul>
+      <form action="/" method="post" class="sidebar__folders">
+        <% folders.forEach(fold => { %>
+          <button type="button" name="<%= fold.folderName %>"><%= fold.folderName %></button>
+        <% }) %>
+      </form>
     </aside>
 
     <main class="dashboard">
@@ -45,6 +43,20 @@
           </li>
         </ul>
       </nav>
+
+      <div class="dashboard__files">
+        <div class="file">
+          <h2>file here</h2>
+        </div>
+
+        <div class="file">
+          <h2>file here</h2>
+        </div>
+
+        <div class="file">
+          <h2>file here</h2>
+        </div>
+      </div>
 
       <dialog class="dashboard__create_folder_form">
         <form action="/?action=create" method="post">

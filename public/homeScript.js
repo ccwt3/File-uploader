@@ -21,3 +21,13 @@ openUpload.addEventListener("click", () => {
 closeUpload.addEventListener("click", () => {
   uploadFolder.close();
 });
+
+//* ---------------------------------
+
+const foldersForm = document.querySelector(".sidebar__folders");
+foldersForm.addEventListener("click", (event) => {
+  if(event.target.tagName === "BUTTON") {
+    foldersForm.action = `/?folder=${event.target.name}`;
+    foldersForm.submit();
+  }
+})
