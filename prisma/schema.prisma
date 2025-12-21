@@ -17,21 +17,29 @@ model User {
 
 model folder {
   id         Int        @id @default(autoincrement())
-  author     User       @relation(fields: [authorId], references: [id])
   authorId   Int
-  folderName String     @unique
+  folderName String
+  isShared   Boolean    @default(false)
+  parentId   Int?
   file       fileData[]
+  author     User       @relation(fields: [authorId], references: [id])
+  parent     folder?    @relation("parent_son", fields: [parentId], references: [id])
+  son        folder[]   @relation("parent_son")
+
+  @@unique([authorId, folderName], name: "author_folder")
 }
 
 model fileData {
   id         Int      @id @default(autoincrement())
-  folder     folder   @relation(fields: [folderId], references: [id])
   folderId   Int
   url        String
-  name       String   @unique
+  name       String
   size       Float
   uploadTime DateTime @default(now())
   fileType   String?
+  folder     folder   @relation(fields: [folderId], references: [id])
+
+  @@unique([folderId, name], name: "folder_file")
 }
 
 model Session {

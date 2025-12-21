@@ -38,6 +38,12 @@ passport.deserializeUser(serial.deserialize);
 app.use("/", homeRouter);
 app.use("/login", loginRouter);
 app.use("/register", registerRouter);
+app.post("/logout", (req, res, next) => {
+  req.logOut((err) => {
+    if (err) return next(err);
+    res.redirect("/");
+  });
+});
 
 // catching error middleware
 app.use((err, req, res, next) => {
