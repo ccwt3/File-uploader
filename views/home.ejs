@@ -15,24 +15,29 @@
 
     <aside class="sidebar">
       <h4>Hello <%= user.username %></h4>
-      
+
       <form action="/logout" method="post">
         <button type="submit">Log out</button>
       </form>
-      
+
       <button type="button" class="sidebar__search sidebar--button">
         <a href="#">Search</a>
       </button>
       <p class="sidebar__folders_title">Folders</p>
-      <form action="/" method="post" class="sidebar__folders">
+      <form action="/" method="get" class="sidebar__folders">
         <% folders.forEach(fold => { %>
-          <button type="button" name="<%= fold.folderName %>"><%= fold.folderName %></button>
+        <button type="submit" name="folder" value="<%= fold.folderName %>">
+          <%= fold.folderName %>
+        </button>
         <% }) %>
       </form>
     </aside>
 
     <main class="dashboard">
-      <h1 class="dashboard__title">Folder's name</h1>
+      <h1 class="dashboard__title">
+        <% if(currentFolder === null) { %> Welcome! <% } else { %> <%=
+        currentFolder %> <% } %>
+      </h1>
       <h5 class="dashboard__subtitle">Manage your files here</h5>
       <nav class="dashboard__navbar">
         <ul>
@@ -64,6 +69,36 @@
       </div>
 
       <dialog class="dashboard__create_folder_form">
+        <form
+          action="/?action=create&folder=<%= currentFolder %>"
+          method="post"
+        >
+          <label for="folderName">Name: </label>
+          <input type="text" name="folderName" id="folderName" />
+          <button type="submit">Create</button>
+        </form>
+
+        <button type="button" class="dashboard__close_create_form">
+          Cancel
+        </button>
+      </dialog>
+
+      <dialog class="dashboard__upload_form">
+        <form
+          action="/?action=upload&folder=<%= currentFolder %>"
+          method="post"
+        >
+          <label for="file">File: </label>
+          <input type="file" />
+          <button type="submit">Upload</button>
+        </form>
+
+        <button type="button" class="dashboard__close_upload_form">
+          Cancel
+        </button>
+      </dialog>
+
+      <!--<dialog class="dashboard__create_folder_form">
         <form action="/?action=create" method="post">
           <label for="folderName">Name: </label>
           <input type="text" name="folderName" id="folderName" />
@@ -85,7 +120,7 @@
         <button type="button" class="dashboard__close_upload_form">
           Cancel
         </button>
-      </dialog>
+      </dialog> -->
     </main>
 
     <script src="homeScript.js"></script>
