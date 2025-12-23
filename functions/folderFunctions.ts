@@ -9,28 +9,47 @@ export {
 
 async function getAllFolders(authorId: number) {
   try {
+    const generalFolder = await prisma.folder.findFirst({
+      where: {
+        authorId: authorId,
+        folderName: "general",
+      },
+      orderBy: {
+        id: "asc"
+      }
+    });
+
     const folders = await prisma.folder.findMany({
       where: {
         AND: {
           authorId: authorId,
-          parentId: null,
+          parentId: generalFolder?.id || null,
         },
       },
     });
-
     return folders;
   } catch (err) {
     return false;
   }
 }
 
-async function createInitialFolder(name: string, userId: number, father: any) {
+async function createInitialFolder(name: string, userId: number) {
   try {
+    const parentFolder = await prisma.folder.findFirst({
+      where: {
+        authorId: userId,
+        folderName: "general",
+      },
+      orderBy: {
+        id: "asc",
+      }
+    });
+
     const newFolder = await prisma.folder.create({
       data: {
         authorId: userId,
         folderName: name,
-        parentId: father,
+        parentId: parentFolder?.id || null,
       },
     });
     return newFolder;
@@ -40,37 +59,41 @@ async function createInitialFolder(name: string, userId: number, father: any) {
   }
 }
 
-async function getFolderChildren(userId: number, folderName: string) {
-  const parent = await prisma.folder.findUnique({
-    where: {
-      author_folder: {
-        authorId: userId,
-        folderName: folderName,
-      },
-    },
-  });
-  if (parent === null) return false;
-
+async function getFolderChildren(userId: number, parentId: number) {
   const children = await prisma.folder.findMany({
     where: {
-      parentId: parent?.id || null,
+      authorId: userId,
+      parentId: parentId,
     },
   });
-  if (children.length === 0) return [parent];
 
-  return children;
+  const parent = await prisma.folder.findFirst({
+    where: {
+      id: parentId,
+    },
+  });
+
+  if (children.length === 0) return {
+    children: [parent],
+    parent: parent,
+  };
+
+  return {
+    children: children,
+    parent: parent,
+  };
 }
 
 async function createChildrenFolder(
   authorId: number,
   name: string,
-  parentName: string
+  parentId: number
 ) {
-  const parent = await prisma.folder.findUnique({
+  let parent = await prisma.folder.findMany({
     where: {
-      author_folder: {
+      AND: {
+        id: parentId,
         authorId: authorId,
-        folderName: parentName,
       },
     },
   });
@@ -82,7 +105,7 @@ async function createChildrenFolder(
       data: {
         authorId: authorId,
         folderName: name,
-        parentId: parent?.id || null,
+        parentId: parentId,
       },
     });
 

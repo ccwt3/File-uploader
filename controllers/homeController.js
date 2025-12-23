@@ -4,27 +4,27 @@ async function homeGet(req, res) {
   // verify the user is logged
   if (!req.user) {
     return res.redirect("/register");
-  } else if (req.query.folder) {
-    const children = await folderFC.getFolderChildren(
+  } else if (!Number.isNaN(req.params.folderId) && req.params.folderId) {
+    const parentId = Number.parseInt(req.params.folderId);
+    const folders = await folderFC.getFolderChildren(
       req.user.id,
-      req.query.folder
+      parentId
     );
-
+    
     return res.render("home", {
       user: req.user,
       err: [req.flash("folder") || null],
-      folders: children,
-      currentFolder: req.query.folder,
+      folders: folders.children,
+      currentFolder: folders.parent,
     });
   }
-
   const folders = await folderFC.getAllFolders(req.user.id);
 
   return res.render("home", {
     user: req.user, // use users id and username
     err: [req.flash("folder") || null], // send a message if any error
     folders: folders, // send all the folders of the user
-    currentFolder: null,
+    currentFolder: {folderName: null, id: null},
   });
 }
 
@@ -44,10 +44,10 @@ async function homePost(req, res) {
       folder = await folderFC.createChildrenFolder(
         id,
         folderName,
-        req.query.folder
+        Number.parseInt(req.query.folder)
       );
     } else {
-      folder = await folderFC.createInitialFolder(folderName, id, null);
+      folder = await folderFC.createInitialFolder(folderName, id);
     }
 
     if (folder && folder !== 1) {

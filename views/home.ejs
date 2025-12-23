@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>home</title>
-    <link rel="stylesheet" href="home.css" />
+    <link rel="stylesheet" href="/home.css" />
   </head>
   <body>
     <div
@@ -26,7 +26,7 @@
       <p class="sidebar__folders_title">Folders</p>
       <form action="/" method="get" class="sidebar__folders">
         <% folders.forEach(fold => { %>
-        <button type="submit" name="folder" value="<%= fold.folderName %>">
+        <button type="button" name="folder" value="<%= fold.id %>">
           <%= fold.folderName %>
         </button>
         <% }) %>
@@ -35,8 +35,8 @@
 
     <main class="dashboard">
       <h1 class="dashboard__title">
-        <% if(currentFolder === null) { %> Welcome! <% } else { %> <%=
-        currentFolder %> <% } %>
+        <% if(currentFolder.folderName === null) { %> Welcome! <% } else { %> <%=
+        currentFolder.folderName %> <% } %>
       </h1>
       <h5 class="dashboard__subtitle">Manage your files here</h5>
       <nav class="dashboard__navbar">
@@ -70,7 +70,7 @@
 
       <dialog class="dashboard__create_folder_form">
         <form
-          action="/?action=create&folder=<%= currentFolder %>"
+          action="/?action=create&folder=<%= currentFolder.id %>"
           method="post"
         >
           <label for="folderName">Name: </label>
@@ -85,7 +85,7 @@
 
       <dialog class="dashboard__upload_form">
         <form
-          action="/?action=upload&folder=<%= currentFolder %>"
+          action="/?action=upload&folder=<%= currentFolder.id %>"
           method="post"
         >
           <label for="file">File: </label>
@@ -123,6 +123,6 @@
       </dialog> -->
     </main>
 
-    <script src="homeScript.js"></script>
+    <script src="/homeScript.js"></script>
   </body>
 </html>

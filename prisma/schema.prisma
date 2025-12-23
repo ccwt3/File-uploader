@@ -26,7 +26,7 @@ model folder {
   parent     folder?    @relation("parent_son", fields: [parentId], references: [id])
   son        folder[]   @relation("parent_son")
 
-  @@unique([authorId, folderName], name: "author_folder")
+  @@unique([authorId, folderName, parentId], name: "author_folder")
 }
 
 model fileData {

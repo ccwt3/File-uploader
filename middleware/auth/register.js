@@ -11,6 +11,14 @@ export default async function registerFunction(username, password) {
       },
     });
 
+    const userGeneralCarpet = await prisma.folder.create({
+      data: {
+        authorId: user.id,
+        folderName: "general",
+        parentId: null,
+      },
+    });
+
     await prisma.$disconnect();
     return true;
   } catch (err) {
