@@ -35,8 +35,8 @@
 
     <main class="dashboard">
       <h1 class="dashboard__title">
-        <% if(currentFolder.folderName === null) { %> Welcome! <% } else { %> <%=
-        currentFolder.folderName %> <% } %>
+        <% if(currentFolder.folderName === null) { %> Welcome! <% } else { %>
+        <%= currentFolder.folderName %> <% } %>
       </h1>
       <h5 class="dashboard__subtitle">Manage your files here</h5>
       <nav class="dashboard__navbar">

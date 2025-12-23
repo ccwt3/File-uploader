@@ -4,13 +4,16 @@ async function homeGet(req, res) {
   // verify the user is logged
   if (!req.user) {
     return res.redirect("/register");
-  } else if (!Number.isNaN(req.params.folderId) && req.params.folderId) {
-    const parentId = Number.parseInt(req.params.folderId);
-    const folders = await folderFC.getFolderChildren(
-      req.user.id,
-      parentId
-    );
+  } 
+  
+  const folderId = req.params.folderId;
+  const userId = req.user.id;
+  
+  if (!isNaN(folderId) && folderId !== undefined) {
     
+    const parentId = Number.parseInt(folderId);
+    const folders = await folderFC.getFolderFamily(userId, parentId);
+
     return res.render("home", {
       user: req.user,
       err: [req.flash("folder") || null],
@@ -18,13 +21,13 @@ async function homeGet(req, res) {
       currentFolder: folders.parent,
     });
   }
-  const folders = await folderFC.getAllFolders(req.user.id);
 
+  const folders = await folderFC.getRootFolders(userId);
   return res.render("home", {
     user: req.user, // use users id and username
     err: [req.flash("folder") || null], // send a message if any error
     folders: folders, // send all the folders of the user
-    currentFolder: {folderName: null, id: null},
+    currentFolder: { folderName: null, id: null },
   });
 }
 
@@ -33,21 +36,22 @@ async function homePost(req, res) {
   if (!req.user) {
     return res.redirect("/register");
   }
+  const query = req.query;
+  const userId = req.user.id;
 
-  if (req.query.action === "create") {
+  if (query.action === "create") {
     // if the user sends to create a folder it does it
     const folderName = req.body.folderName;
-    const id = req.user.id;
     let folder;
 
-    if (req.query.folder) {
+    if (query.folder) {
       folder = await folderFC.createChildrenFolder(
-        id,
+        userId,
         folderName,
-        Number.parseInt(req.query.folder)
+        Number.parseInt(query.folder)
       );
     } else {
-      folder = await folderFC.createInitialFolder(folderName, id);
+      folder = await folderFC.createRootFolders(folderName, userId);
     }
 
     if (folder && folder !== 1) {

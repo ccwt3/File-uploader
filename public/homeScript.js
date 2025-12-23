@@ -29,4 +29,4 @@ foldersForm.addEventListener("click", async (event) => {
   if (event.target.tagName === "BUTTON") {
     window.location.href = `/folder/${event.target.value}`;
   }
-})
+});

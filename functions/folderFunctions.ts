@@ -1,29 +1,29 @@
 import prisma from "../prisma/lib/prisma";
 
 export {
-  getAllFolders,
-  createInitialFolder,
-  getFolderChildren,
+  getRootFolders,
+  createRootFolders,
+  getFolderFamily,
   createChildrenFolder,
 };
 
-async function getAllFolders(authorId: number) {
+async function getRootFolders(userId: number) {
   try {
-    const generalFolder = await prisma.folder.findFirst({
+    const driveFolder = await prisma.folder.findFirst({
       where: {
-        authorId: authorId,
+        authorId: userId,
         folderName: "general",
       },
       orderBy: {
-        id: "asc"
-      }
+        id: "asc",
+      },
     });
 
     const folders = await prisma.folder.findMany({
       where: {
         AND: {
-          authorId: authorId,
-          parentId: generalFolder?.id || null,
+          authorId: userId,
+          parentId: driveFolder?.id || null,
         },
       },
     });
@@ -33,33 +33,7 @@ async function getAllFolders(authorId: number) {
   }
 }
 
-async function createInitialFolder(name: string, userId: number) {
-  try {
-    const parentFolder = await prisma.folder.findFirst({
-      where: {
-        authorId: userId,
-        folderName: "general",
-      },
-      orderBy: {
-        id: "asc",
-      }
-    });
-
-    const newFolder = await prisma.folder.create({
-      data: {
-        authorId: userId,
-        folderName: name,
-        parentId: parentFolder?.id || null,
-      },
-    });
-    return newFolder;
-  } catch (err) {
-    //console.error(err);
-    return false;
-  }
-}
-
-async function getFolderChildren(userId: number, parentId: number) {
+async function getFolderFamily(userId: number, parentId: number) {
   const children = await prisma.folder.findMany({
     where: {
       authorId: userId,
@@ -73,10 +47,11 @@ async function getFolderChildren(userId: number, parentId: number) {
     },
   });
 
-  if (children.length === 0) return {
-    children: [parent],
-    parent: parent,
-  };
+  if (children.length === 0)
+    return {
+      children: [parent],
+      parent: parent,
+    };
 
   return {
     children: children,
@@ -84,8 +59,35 @@ async function getFolderChildren(userId: number, parentId: number) {
   };
 }
 
+async function createRootFolders(name: string, userId: number) {
+  try {
+    const driveFolder = await prisma.folder.findFirst({
+      where: {
+        authorId: userId,
+        folderName: "general",
+      },
+      orderBy: {
+        id: "asc",
+      },
+    });
+
+    const newFolder = await prisma.folder.create({
+      data: {
+        authorId: userId,
+        folderName: name,
+        parentId: driveFolder?.id || null,
+      },
+    });
+
+    return newFolder;
+  } catch (err) {
+    //console.error(err);
+    return false;
+  }
+}
+
 async function createChildrenFolder(
-  authorId: number,
+  userId: number,
   name: string,
   parentId: number
 ) {
@@ -93,7 +95,7 @@ async function createChildrenFolder(
     where: {
       AND: {
         id: parentId,
-        authorId: authorId,
+        authorId: userId,
       },
     },
   });
@@ -103,7 +105,7 @@ async function createChildrenFolder(
   try {
     const newFolder = prisma.folder.create({
       data: {
-        authorId: authorId,
+        authorId: userId,
         folderName: name,
         parentId: parentId,
       },
