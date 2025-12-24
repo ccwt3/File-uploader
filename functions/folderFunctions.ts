@@ -7,6 +7,9 @@ export {
   createChildrenFolder,
 };
 
+// return 1; NO FOLDER FOUND
+// return 2; UNIQUE CONSTRAINT VIOLATED
+
 async function getRootFolders(userId: number) {
   try {
     const driveFolder = await prisma.folder.findFirst({
@@ -71,6 +74,8 @@ async function createRootFolders(name: string, userId: number) {
       },
     });
 
+    if (driveFolder === null) return 1;
+
     const newFolder = await prisma.folder.create({
       data: {
         authorId: userId,
@@ -81,8 +86,7 @@ async function createRootFolders(name: string, userId: number) {
 
     return newFolder;
   } catch (err) {
-    //console.error(err);
-    return false;
+    return 2;
   }
 }
 
@@ -103,7 +107,7 @@ async function createChildrenFolder(
   if (parent === null) return 1;
 
   try {
-    const newFolder = prisma.folder.create({
+    const newFolder = await prisma.folder.create({
       data: {
         authorId: userId,
         folderName: name,
@@ -113,6 +117,6 @@ async function createChildrenFolder(
 
     return newFolder;
   } catch (err) {
-    return false;
+    return 2;
   }
 }
