@@ -1,3 +1,5 @@
+/*---------- gemeral layout -------------*/
+
 * {
   box-sizing: border-box;
 }
@@ -21,6 +23,7 @@ body {
   border: 1px solid red;
   padding: 1rem;
   width: 80dvw;
+  z-index: 0;
 }
 
 .dashboard__navbar ul{
@@ -30,6 +33,8 @@ body {
   list-style: none;
   gap: 1rem;
 }
+
+/*---------- error message -------------*/
 
 .error__message {
   display: flex;
@@ -72,4 +77,40 @@ body {
     background-color: blue;
     width: 200px;
   }
+}
+
+/*---------- sidebar and dropMenu -------------*/
+
+.sidebar__folder {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+.sidebar__dropdown {
+  display: inline;
+  position: relative;
+  background-color: red;
+}
+
+.sidebar__dropbtn {
+  padding: 0 5px;
+  background-color: black;
+  color: white;
+}
+
+.sidebar__dropdown_content {
+  display: none;
+  position: absolute;
+  background-color: pink;
+  min-width: 70px;
+  padding: 10px;
+  z-index: 1;
+}
+
+.dropdown_active {
+  display: flex;
+  flex-direction: column;
+  transform: translateX(-75%);
 }

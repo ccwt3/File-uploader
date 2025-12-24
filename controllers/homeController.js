@@ -54,14 +54,11 @@ async function homePost(req, res) {
       folder = await folderFC.createRootFolders(folderName, userId);
     }
 
-    if (folder && folder !== 1) {
-      console.log(folder);
-      return res.redirect("/");
-    } else if (folder === 1) {
-      req.flash("parent does not exist");
-    } else {
+    if (folder === 1) {
+      req.flash("folder", "Folder not found");
+    } else if (folder === 2) {
       req.flash("folder", "Two folders can't have the same name");
-    }
+    };
   }
 
   return res.redirect("/");

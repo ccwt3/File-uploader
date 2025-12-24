@@ -25,8 +25,16 @@ closeUpload.addEventListener("click", () => {
 //* ---------------------------------
 
 const foldersForm = document.querySelector(".sidebar__folders");
+
 foldersForm.addEventListener("click", async (event) => {
-  if (event.target.tagName === "BUTTON") {
-    window.location.href = `/folder/${event.target.value}`;
+  const button = event.target;
+
+  if (button.tagName === "BUTTON" && button.className === "folder__button") {
+    window.location.href = `/folder/${button.value}`;
+  } else if (button.tagName === "BUTTON" && button.className === "dropdown__button") {
+    foldersForm.action = `/?action=${button.value}&folder=${button.dataset.folderid}`;
+  } else if (button.tagName === "BUTTON" && button.className === "sidebar__dropbtn") {
+    const dropMenu = document.querySelector(`.data_${button.dataset.drop_id}`);
+    dropMenu.classList.toggle("dropdown_active")
   }
 });
