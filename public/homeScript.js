@@ -29,12 +29,17 @@ const foldersForm = document.querySelector(".sidebar__folders");
 foldersForm.addEventListener("click", async (event) => {
   const button = event.target;
 
-  if (button.tagName === "BUTTON" && button.className === "folder__button") {
+  if (!(button.tagName === "BUTTON")) {
+    return;
+  }
+
+  if (button.className === "folder__button") {
     window.location.href = `/folder/${button.value}`;
-  } else if (button.tagName === "BUTTON" && button.className === "dropdown__button") {
+  } else if (button.className === "dropdown__button") {
     foldersForm.action = `/?action=${button.value}&folder=${button.dataset.folderid}`;
-  } else if (button.tagName === "BUTTON" && button.className === "sidebar__dropbtn") {
+    foldersForm.submit();
+  } else if (button.className === "sidebar__dropbtn") {
     const dropMenu = document.querySelector(`.data_${button.dataset.drop_id}`);
-    dropMenu.classList.toggle("dropdown_active")
+    dropMenu.classList.toggle("dropdown_active");
   }
 });

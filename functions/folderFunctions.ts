@@ -5,6 +5,7 @@ export {
   createRootFolders,
   getFolderFamily,
   createChildrenFolder,
+  deleteFolder
 };
 
 // return 1; NO FOLDER FOUND
@@ -119,4 +120,17 @@ async function createChildrenFolder(
   } catch (err) {
     return 2;
   }
+}
+
+async function deleteFolder(userId: number, folderId: number) {
+  const deletedFolder = await prisma.folder.deleteMany({
+    where: {
+      AND: {
+        id: folderId,
+        authorId: userId
+      }
+    }
+  })
+
+  return deletedFolder;
 }

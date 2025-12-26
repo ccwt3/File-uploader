@@ -22,8 +22,8 @@ model folder {
   isShared   Boolean    @default(false)
   parentId   Int?
   file       fileData[]
-  author     User       @relation(fields: [authorId], references: [id])
-  parent     folder?    @relation("parent_son", fields: [parentId], references: [id])
+  author     User       @relation(fields: [authorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  parent     folder?    @relation("parent_son", fields: [parentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   son        folder[]   @relation("parent_son")
 
   @@unique([authorId, folderName, parentId], name: "author_folder")
@@ -37,7 +37,7 @@ model fileData {
   size       Float
   uploadTime DateTime @default(now())
   fileType   String?
-  folder     folder   @relation(fields: [folderId], references: [id])
+  folder     folder   @relation(fields: [folderId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@unique([folderId, name], name: "folder_file")
 }
