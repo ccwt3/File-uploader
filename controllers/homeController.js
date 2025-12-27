@@ -1,16 +1,16 @@
+import { queryObjects } from "v8";
 import * as folderFC from "../functions/folderFunctions.ts";
 
 async function homeGet(req, res) {
   // verify the user is logged
   if (!req.user) {
     return res.redirect("/register");
-  } 
-  
+  }
+
   const folderId = req.params.folderId;
   const userId = req.user.id;
-  
+
   if (!isNaN(folderId) && folderId !== undefined) {
-    
     const parentId = Number.parseInt(folderId);
     const folders = await folderFC.getFolderFamily(userId, parentId);
 
@@ -39,18 +39,22 @@ async function homePost(req, res) {
   const query = req.query;
   const userId = req.user.id;
 
-  if (query.action === "create") {
+  if (query.action === "create") { //! CREAR FOLDER
     // if the user sends to create a folder it does it
     const folderName = req.body.folderName;
     let folder;
-
-    if (query.folder) {
+    const folderId = Number(query.folder);
+    if (
+      Number.isInteger(folderId) &&
+      query.folder.trim() !== "" &&
+      query.folder !== undefined
+    ) {
       folder = await folderFC.createChildrenFolder(
         userId,
         folderName,
-        Number.parseInt(query.folder)
+        folderId
       );
-    } else {
+    } else if (query.folder == "") {
       folder = await folderFC.createRootFolders(folderName, userId);
     }
 
@@ -58,8 +62,46 @@ async function homePost(req, res) {
       req.flash("folder", "Folder not found");
     } else if (folder === 2) {
       req.flash("folder", "Two folders can't have the same name");
-    };
+    }
+  } else if (query.action === "delete" && query.folder) { //! ELIMINAR FOLDER
+    const folderId = Number(query.folder);
+    const folderIsValid =
+      Number.isInteger(folderId) &&
+      query.folder.trim() !== "" &&
+      query.folder !== undefined;
+
+    if (!folderIsValid) {
+      return res.redirect("/");
+    }
+
+    try {
+      const elpepe = await folderFC.deleteFolder(userId, folderId);
+      return console.log(elpepe);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      return res.redirect("/");
+    }
+  } else if (query.action === "edit" && query.folder) { //! EDITAR FOLDER
+    const folderId = Number(query.folder);
+    const folderIsValid =
+      Number.isInteger(folderId) &&
+      query.folder.trim() !== "" &&
+      query.folder !== undefined;
+
+    if (!folderIsValid) {
+      return res.redirect("/");
+    }
+
+    return res.redirect("/");
   }
+
+  if (query.action === "upload" && query.folder) {
+    
+  }
+
+
+
 
   return res.redirect("/");
 }

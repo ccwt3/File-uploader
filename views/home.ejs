@@ -24,11 +24,50 @@
         <a href="#">Search</a>
       </button>
       <p class="sidebar__folders_title">Folders</p>
-      <form action="/" method="get" class="sidebar__folders">
+      <form action="/" method="post" class="sidebar__folders">
         <% folders.forEach(fold => { %>
-        <button type="button" name="folder" value="<%= fold.id %>">
-          <%= fold.folderName %>
-        </button>
+        <div class="sidebar__folder">
+          <button
+            type="button"
+            name="folder"
+            value="<%= fold.id %>"
+            class="folder__button"
+          >
+            <%= fold.folderName %>
+          </button>
+
+          <div class="sidebar__dropdown">
+            <button
+              type="button"
+              class="sidebar__dropbtn"
+              data-drop_id="<%= fold.id %>"
+            >
+              :
+            </button>
+
+            <div
+              class="sidebar__dropdown_content data_<%=fold.id%>"
+              data-menu_id="<%= fold.id %>"
+            >
+              <button
+                type="button"
+                value="delete"
+                class="dropdown__button"
+                data-folderid="<%= fold.id %>"
+              >
+                Delete
+              </button>
+              <button
+                type="button"
+                value="edit"
+                class="dropdown__button"
+                data-folderid="<%= fold.id %>"
+              >
+                Edit
+              </button>
+            </div>
+          </div>
+        </div>
         <% }) %>
       </form>
     </aside>
@@ -85,11 +124,12 @@
 
       <dialog class="dashboard__upload_form">
         <form
-          action="/?action=upload&folder=<%= currentFolder.id %>"
+          action="/upload?folder=<%= currentFolder.id %>"
           method="post"
+          enctype="multipart/form-data"
         >
           <label for="file">File: </label>
-          <input type="file" />
+          <input type="file" name="uploadedFile"/>
           <button type="submit">Upload</button>
         </form>
 
