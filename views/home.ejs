@@ -124,11 +124,12 @@
 
       <dialog class="dashboard__upload_form">
         <form
-          action="/?action=upload&folder=<%= currentFolder.id %>"
+          action="/upload?folder=<%= currentFolder.id %>"
           method="post"
+          enctype="multipart/form-data"
         >
           <label for="file">File: </label>
-          <input type="file" />
+          <input type="file" name="uploadedFile"/>
           <button type="submit">Upload</button>
         </form>
 

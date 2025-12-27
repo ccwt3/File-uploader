@@ -134,3 +134,7 @@ async function deleteFolder(userId: number, folderId: number) {
 
   return deletedFolder;
 }
+
+async function editFolderName(newName:string, folderId: number, userId: number) {
+  return;
+}

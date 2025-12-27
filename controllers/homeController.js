@@ -1,3 +1,4 @@
+import { queryObjects } from "v8";
 import * as folderFC from "../functions/folderFunctions.ts";
 
 async function homeGet(req, res) {
@@ -38,7 +39,7 @@ async function homePost(req, res) {
   const query = req.query;
   const userId = req.user.id;
 
-  if (query.action === "create") {
+  if (query.action === "create") { //! CREAR FOLDER
     // if the user sends to create a folder it does it
     const folderName = req.body.folderName;
     let folder;
@@ -62,8 +63,7 @@ async function homePost(req, res) {
     } else if (folder === 2) {
       req.flash("folder", "Two folders can't have the same name");
     }
-  } else if (query.action === "delete" && query.folder) {
-    //todo WORK ON THE DELETE PART; CONTROLLER, FOLDERFUNCTIONS
+  } else if (query.action === "delete" && query.folder) { //! ELIMINAR FOLDER
     const folderId = Number(query.folder);
     const folderIsValid =
       Number.isInteger(folderId) &&
@@ -82,9 +82,26 @@ async function homePost(req, res) {
     } finally {
       return res.redirect("/");
     }
-  } else if (query.action === "edit" && query.folder) {
-    console.log("edit", query.folder);
+  } else if (query.action === "edit" && query.folder) { //! EDITAR FOLDER
+    const folderId = Number(query.folder);
+    const folderIsValid =
+      Number.isInteger(folderId) &&
+      query.folder.trim() !== "" &&
+      query.folder !== undefined;
+
+    if (!folderIsValid) {
+      return res.redirect("/");
+    }
+
+    return res.redirect("/");
   }
+
+  if (query.action === "upload" && query.folder) {
+    
+  }
+
+
+
 
   return res.redirect("/");
 }
